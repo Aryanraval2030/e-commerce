@@ -1,0 +1,18 @@
+my-app/
+│
+├── src/
+│   ├── controllers/
+│   ├── services/
+│   ├── models/
+│   ├── routes/
+│   ├── middlewares/
+│   ├── utils/
+│   ├── config/
+│   └── app.js
+│
+├── tests/
+├── logs/
+├── .env
+├── .gitignore
+├── package.json
+└── server.js
