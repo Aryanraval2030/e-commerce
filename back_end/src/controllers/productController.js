@@ -58,3 +58,13 @@ export const searchProducts = async (req, res) => {
     });
   }
 };
+
+//all data update
+
+export const allDataupdate = async (req, res) => {
+  try {
+    const id = req.query.id;
+
+    const updateProducts = await mobilePro.findById(id);
+  } catch (error) {}
+};

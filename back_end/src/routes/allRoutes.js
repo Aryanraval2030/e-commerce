@@ -8,5 +8,6 @@ const router = express.Router();
 
 router.post("/products", addProduct);
 router.get("/products", searchProducts);
+router.put("/products", allDataupdate)
 
 export default router;
