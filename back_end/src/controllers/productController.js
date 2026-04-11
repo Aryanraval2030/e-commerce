@@ -63,8 +63,79 @@ export const searchProducts = async (req, res) => {
 
 export const allDataupdate = async (req, res) => {
   try {
-    const id = req.query.id;
+    const { id } = req.params;
 
-    const updateProducts = await mobilePro.findById(id);
-  } catch (error) {}
+    const existData = await mobilePro.findById(id);
+
+    if (!existData) {
+      return res.status(404).json({
+        status: false,
+        message: "product not found",
+      });
+    }
+
+    let ifSame = true;
+
+    for (let key in req.body) {
+      if (req.body[key] !== existData[key]) {
+        ifSame = false;
+        break;
+      }
+    }
+
+    if (ifSame) {
+      return res.status(200).json({
+        status: false,
+        message: "no change detected",
+      });
+    }
+
+    const updateProducts = await mobilePro.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updateProducts) {
+      return res.status(404).json({
+        status: false,
+        message: "product not found",
+      });
+    }
+
+    res.status(200).json({
+      status: true,
+      message: "product update successfully",
+      data: updateProducts,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: false,
+      message: error.message,
+    });
+  }
+};
+
+export const deleteProducts = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const products = await mobilePro.findById(id);
+
+    if (!products) {
+      return res.status(404).json({
+        status: false,
+        message: "product not found",
+      });
+    }
+    await mobilePro.findByIdAndDelete(id);
+
+    res.status(200).json({
+      status: true,
+      message: "products deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: false,
+      message: error.message,
+    });
+  }
 };
