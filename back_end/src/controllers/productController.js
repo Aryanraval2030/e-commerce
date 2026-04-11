@@ -1,4 +1,7 @@
 import { mobilePro } from "../models/productModels.js";
+import { userAuth } from "../models/productModels.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 // 15 mobile data post
 export const addProduct = async (req, res) => {
@@ -131,6 +134,67 @@ export const deleteProducts = async (req, res) => {
     res.status(200).json({
       status: true,
       message: "products deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: false,
+      message: error.message,
+    });
+  }
+};
+
+// sign up users
+export const registerUser = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await userAuth.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+
+    res.status(201).json({
+      status: true,
+      message: "user created",
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: false,
+      message: error.message,
+    });
+  }
+};
+
+// login users
+
+export const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await userAuth.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        status: false,
+        message: "user not found",
+      });
+    }
+
+    const isMatch = bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      res.status(400).json({
+        status: false,
+        message: "password not matched",
+      });
+    }
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    res.status(200).json({
+      message: "Login success",
+      token,
     });
   } catch (error) {
     res.status(500).json({

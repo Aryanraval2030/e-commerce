@@ -7,11 +7,33 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-await connectDb();
 app.use("/api", allRoutes);
 
-const port = process.env.PORT;
+const serverStart = async () => {
+  try {
+    await connectDb();
 
-app.listen(port, () => {
-  console.log(`server is runing..${port}`);
+    const port = process.env.PORT;
+
+    app.listen(port, () => {
+      console.log(`server is runing..${port}`);
+    });
+  } catch (error) {
+    console.error("Server error:", error.message);
+    process.exit(1);
+  }
+};
+
+// async errors
+process.on("unhandledRejection", (err) => {
+  console.error("Unhandled Rejection:", err.message);
+  process.exit(1);
 });
+
+// sync errors
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err.message);
+  process.exit(1);
+});
+
+serverStart();
