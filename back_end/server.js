@@ -9,6 +9,11 @@ const app = express();
 app.use(express.json());
 
 app.use(cors());
+app.use((req, res, next) => {
+  console.log("API hit ho rahi hai");
+  next();
+});
+
 app.use("/api", allRoutes);
 
 const serverStart = async () => {
