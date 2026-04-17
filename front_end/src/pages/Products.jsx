@@ -21,6 +21,7 @@ function Products() {
           <p>ram:{items.ram}</p>
           <p>storage:{items.storage}</p>
           <p>color:{items.color}</p>
+          <img src={items.img} alt="" />
         </div>
       ))}
     </div>
