@@ -8,12 +8,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: "*", // ya apna frontend URL
-    methods: ["GET", "POST", "PUT", "DELETE"],
-  }),
-);
+app.use(cors());
 app.use("/api", allRoutes);
 
 const serverStart = async () => {
