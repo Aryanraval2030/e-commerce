@@ -118,6 +118,8 @@ export const allDataupdate = async (req, res) => {
   }
 };
 
+// dlt products
+
 export const deleteProducts = async (req, res) => {
   try {
     const { id } = req.params;
