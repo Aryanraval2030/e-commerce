@@ -15,10 +15,10 @@ router.get("/products", searchProducts);
 router.put("/products/:id", allDataupdate);
 router.delete("/products/:id", deleteProducts);
 
-router.get("/products", authMiddleware, (req, res) => {
-  res.json({
-    message: "Authorized user",
-    user: req.user,
-  });
-});
+// router.get("/products", authMiddleware, (req, res) => {
+//   res.json({
+//     message: "Authorized user",
+//     user: req.user,
+//   });
+// });
 export default router;
